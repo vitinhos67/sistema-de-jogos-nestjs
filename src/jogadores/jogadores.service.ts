@@ -17,8 +17,8 @@ export class JogadoresService {
     return await this.JogadoresModel.find();
   }
 
-  getJogadorPorEmail(email: string) {
-    const jogadorEncontrado = this.JogadoresModel.find({
+  async getJogadorPorEmail(email: string) {
+    const jogadorEncontrado = await this.JogadoresModel.find({
       email,
     });
 
@@ -33,9 +33,9 @@ export class JogadoresService {
   async criarAtualizarJogador(criaJogadorDto: CriarJogadorDTO): Promise<void> {
     const { email } = criaJogadorDto;
 
-    const jogadorEncontrado = this.jogadores.find(
-      (jogador) => jogador.email === email,
-    );
+    const jogadorEncontrado = await this.JogadoresModel.findOne({
+      email: email,
+    });
 
     if (jogadorEncontrado) {
       return await this.atualizar(jogadorEncontrado, criaJogadorDto);
@@ -60,7 +60,7 @@ export class JogadoresService {
   }
 
   async deletarJogador(email: string) {
-    const jogadores = this.JogadoresModel.remove(email);
+    const jogadores = await this.JogadoresModel.remove(email);
     console.log(jogadores);
     if (!jogadores) {
       throw new NotFoundException(
@@ -71,10 +71,18 @@ export class JogadoresService {
   }
 
   private async atualizar(
-    jogadorEncontrado: Jogador,
+    jogadorEncontrado,
     criaJogadorDto: CriarJogadorDTO,
   ): Promise<void> {
     const { nome } = criaJogadorDto;
-    jogadorEncontrado.nome = nome;
+
+    await this.JogadoresModel.updateOne(
+      {
+        email: jogadorEncontrado.email,
+      },
+      {
+        nome,
+      },
+    );
   }
 }
