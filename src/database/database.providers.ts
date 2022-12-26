@@ -1,13 +1,14 @@
+import * as constains from '../config/constants';
 import * as mongoose from 'mongoose';
+
+const { config } = constains;
 
 export const databaseProviders = [
   {
     provide: 'DATABASE_CONNECTION',
     useFactory: (): Promise<typeof mongoose> => {
       mongoose.set('strictQuery', true);
-      return mongoose.connect(
-        'mongodb+srv://victor:senha123@cluster0.5deos.mongodb.net/test1',
-      );
+      return mongoose.connect(config.database_uri);
     },
   },
 ];

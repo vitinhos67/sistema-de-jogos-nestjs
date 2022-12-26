@@ -6,6 +6,7 @@ import {
   HttpCode,
   Post,
   Query,
+  Param,
   Res,
 } from '@nestjs/common';
 import { CriarJogadorDTO } from './dtos/criar-jogador.dto';
