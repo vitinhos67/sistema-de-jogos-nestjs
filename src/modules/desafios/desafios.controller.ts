@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   UsePipes,
   ValidationPipe,
@@ -21,5 +22,10 @@ export class DesafiosController {
   @UsePipes(ValidationPipe)
   async cadastrarDesafios(@Body() criarCategoriaDTO: CriarDesafioDTO) {
     return await this.desafiosServices.cadastrarDesafio(criarCategoriaDTO);
+  }
+
+  @Get('/meusdesafios/:id')
+  async obterMeusDesafios(@Param('id') id: string) {
+    return await this.desafiosServices.obterMeusDesafios(id);
   }
 }

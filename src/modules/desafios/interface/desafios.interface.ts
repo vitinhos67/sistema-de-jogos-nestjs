@@ -6,7 +6,6 @@ export interface DesafioInterface {
   por: Jogador; //
   para: Jogador;
   categoria: string; //
-  jogadores: Array<Jogador>; //
   partida?: Partida;
 }
 

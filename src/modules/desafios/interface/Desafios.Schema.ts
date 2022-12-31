@@ -38,11 +38,11 @@ export class Desafios {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Jogador' })
   por: unknown;
 
-  @Prop()
-  categoria: string;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Jogador' })
+  para: unknown;
 
   @Prop()
-  jogadores: [];
+  categoria: string;
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,

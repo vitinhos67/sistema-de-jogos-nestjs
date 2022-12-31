@@ -1,4 +1,8 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  BadGatewayException,
+} from '@nestjs/common';
 import { DesafioInterface, Desafio } from './interface/desafios.interface';
 import { Model } from 'mongoose';
 import { CriarDesafioDTO } from './dtos/criar-desafio.dto';
@@ -48,12 +52,29 @@ export class DesafiosService {
       status: Desafio.PENDENTE,
       por: encontrarJogador,
       para: encontrarJogadorRequisitado,
-      jogadores: [encontrarJogador, encontrarJogadorRequisitado],
       acontece: dataHoraDesafio,
     };
 
     const cadastrarDesafio = await this.DesafiosModel.create(desafioInterface);
 
     return cadastrarDesafio;
+  }
+
+  async obterMeusDesafios(id: string) {
+    try {
+      const encontrarUsuario = await this.jogadoresModel.findById(id);
+
+      if (!encontrarUsuario) {
+        throw new BadRequestException('O jogador nao foi encontrado');
+      }
+
+      const encontrarDesafios = await this.DesafiosModel.find({
+        para: id,
+      });
+
+      return encontrarDesafios;
+    } catch (error) {
+      throw new BadGatewayException(error);
+    }
   }
 }
