@@ -6,17 +6,18 @@ export interface DesafioInterface {
   por: Jogador; //
   para: Jogador;
   categoria: string; //
-  partida?: Partida;
+  partida?: PartidaInterface;
+}
+export interface PartidaInterface {
+  categoria: string;
+  jogadores: [];
+  resultado: Resultado[];
 }
 
-export interface Partida {
-  def: Jogador;
-  resultado: Array<Resultado>;
-}
-
-export interface Resultado {
+type Resultado = {
   set: string;
-}
+  ganhador: string;
+};
 
 export enum Desafio {
   REALIZADO = 'REALIZADO',

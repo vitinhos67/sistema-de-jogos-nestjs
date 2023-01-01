@@ -1,26 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 
-/*  import { Jogadores } from 'src/modules/jogadores/interfaces/jogadores.schema';
-
-export const DesafiosSchemaMongoose = new mongoose.Schema({
-  acontece: String,
-  status: String,
-  solicitadoEm: {
-    type: Date,
-    default: Date.now,
-  },
-  por: { type: mongoose.Schema.Types.ObjectId, ref: 'Jogador' },
-  categoria: String,
-  jogadores: [],
-  partidas: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-    },
-  ],
-  resultados: [],
-});  */
-
 @Schema()
 export class Desafios {
   @Prop()
@@ -44,13 +24,8 @@ export class Desafios {
   @Prop()
   categoria: string;
 
-  @Prop({
-    type: mongoose.Schema.Types.ObjectId,
-  })
-  partidas: [];
-
   @Prop()
-  resultados: [];
+  partidas: [];
 }
 
 export const DesafiosSchema = SchemaFactory.createForClass(Desafios);

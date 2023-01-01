@@ -2,7 +2,6 @@ import {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   HttpException,
   BadRequestException,
-  Inject,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -12,7 +11,7 @@ import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';
 import { AtualizarJogadorDTO } from './dtos/atualizar-jogador';
-
+import { handleError } from 'src/utils/error.handler';
 import { CriarJogadorDTO } from './dtos/criar-jogador.dto';
 import Jogador from './interfaces/jogador.interface';
 
@@ -31,11 +30,7 @@ export class JogadoresService {
   }
 
   async getJogadorID(id: string) {
-    const jogador = await this.JogadoresModel.findById(id);
-
-    if (!jogador) {
-      throw new NotFoundException(`jogador_nao_encontrado`);
-    }
+    const jogador = await this.JogadoresModel.findById(id).catch(handleError);
     return jogador;
   }
 
@@ -91,7 +86,12 @@ export class JogadoresService {
     id: string,
     atualizarJogadorDto: AtualizarJogadorDTO,
   ): Promise<void> {
-    await this.getJogadorID(id);
+    const jogador = await this.getJogadorID(id);
+
+    if (!jogador) {
+      throw new NotFoundException(`Jogador com o id ${id} não encontrado`);
+    }
+
     await this.JogadoresModel.findByIdAndUpdate(id, atualizarJogadorDto);
   }
 

@@ -1,28 +1,4 @@
 import * as mongoose from 'mongoose';
-/* 
-export const CategoriaSchema1 = new mongoose.Schema(
-  {
-    Categoria: {
-      type: String,
-      unique: true,
-    },
-    descricao: String,
-    eventos: [
-      {
-        nome: String,
-        operacao: String,
-        valor: Number,
-      },
-    ],
-    jogadores: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'jogador',
-      },
-    ],
-  },
-  { timestamp: true, collection: 'category' },
-); */
 
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';

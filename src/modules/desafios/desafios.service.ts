@@ -6,28 +6,30 @@ import {
 import { DesafioInterface, Desafio } from './interface/desafios.interface';
 import { Model } from 'mongoose';
 import { CriarDesafioDTO } from './dtos/criar-desafio.dto';
-import { Categoria } from '../categorias/interfaces/categoria.interface';
-import Jogador from '../jogadores/interfaces/jogador.interface';
 import { InjectModel } from '@nestjs/mongoose';
+import { JogadoresService } from '../jogadores/jogadores.service';
+import { CategoriasService } from '../categorias/categorias.service';
 
 @Injectable()
 export class DesafiosService {
   constructor(
     @InjectModel('Desafios')
     private DesafiosModel: Model<DesafioInterface>,
-    @InjectModel('Categoria')
-    private categoriaModel: Model<Categoria>,
-    @InjectModel('Jogadores')
-    private jogadoresModel: Model<Jogador>,
+    private categoriaService: CategoriasService,
+    private jogadoresService: JogadoresService,
   ) {}
-  async todosDesafios() {
+  async todosDesafios(): Promise<DesafioInterface[]> {
     return await this.DesafiosModel.find();
   }
 
-  async cadastrarDesafio(CriarDesafioDTO: CriarDesafioDTO) {
+  async cadastrarDesafio(
+    CriarDesafioDTO: CriarDesafioDTO,
+  ): Promise<DesafioInterface> {
     const { categoria, solicitadoPor, para, dataHoraDesafio } = CriarDesafioDTO;
 
-    const encontrarCategoria = await this.categoriaModel.findOne({ categoria });
+    const encontrarCategoria = await this.categoriaService.categoriaPorId(
+      categoria,
+    );
 
     if (!encontrarCategoria) {
       throw new BadRequestException(
@@ -35,11 +37,12 @@ export class DesafiosService {
       );
     }
 
-    const encontrarJogador = await this.jogadoresModel.findById(solicitadoPor);
-
-    const encontrarJogadorRequisitado = await this.jogadoresModel.findById(
-      para,
+    const encontrarJogador = await this.jogadoresService.getJogadorID(
+      solicitadoPor,
     );
+
+    const encontrarJogadorRequisitado =
+      await this.jogadoresService.getJogadorID(para);
 
     if (!encontrarJogador || !encontrarJogadorRequisitado) {
       throw new BadRequestException(
@@ -60,9 +63,9 @@ export class DesafiosService {
     return cadastrarDesafio;
   }
 
-  async obterMeusDesafios(id: string) {
+  async obterMeusDesafios(id: string): Promise<DesafioInterface[]> {
     try {
-      const encontrarUsuario = await this.jogadoresModel.findById(id);
+      const encontrarUsuario = await this.jogadoresService.getJogadorID(id);
 
       if (!encontrarUsuario) {
         throw new BadRequestException('O jogador nao foi encontrado');
@@ -78,7 +81,7 @@ export class DesafiosService {
     }
   }
 
-  async atualizarStatusDesafio(id, status) {
+  async atualizarStatusDesafio(id: string, status: string) {
     const encontrarDesafio = await this.DesafiosModel.findById(id);
 
     if (!encontrarDesafio) {

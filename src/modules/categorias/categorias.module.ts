@@ -14,5 +14,6 @@ import { JogadoresSchema } from '../jogadores/interfaces/jogadores.schema';
   ],
   controllers: [CategoriasController],
   providers: [CategoriasService],
+  exports: [CategoriasService],
 })
 export class CategoriasModule {}
