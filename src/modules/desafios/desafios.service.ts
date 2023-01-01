@@ -77,4 +77,25 @@ export class DesafiosService {
       throw new BadGatewayException(error);
     }
   }
+
+  async atualizarStatusDesafio(id, status) {
+    const encontrarDesafio = await this.DesafiosModel.findById(id);
+
+    if (!encontrarDesafio) {
+      throw new BadRequestException('O desafio não foi encontrado');
+    }
+
+    const atualizarStatus = await this.DesafiosModel.updateOne(
+      {
+        id,
+      },
+      {
+        $set: {
+          status,
+        },
+      },
+    );
+
+    return atualizarStatus;
+  }
 }

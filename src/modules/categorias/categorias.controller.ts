@@ -12,7 +12,7 @@ import {
 import { CategoriasService } from './categorias.service';
 import { CriarCategoriaDTO } from './dto/criar-categoria-dto';
 import { AtualizarCategoriaDTO } from './dto/atualizarCategoria.dto';
-import { ValidacaoParametrosPipe } from 'src/common/pipes/jogadores.validate';
+import { ValidacaoParametrosPipe } from 'src/common/pipes/jogadores.validate.pipe';
 
 @Controller('/api/v1/categorias')
 export class CategoriasController {

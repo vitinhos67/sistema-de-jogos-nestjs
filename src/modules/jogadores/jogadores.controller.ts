@@ -13,7 +13,7 @@ import {
 import { CriarJogadorDTO } from './dtos/criar-jogador.dto';
 import { JogadoresService } from './jogadores.service';
 import Jogador from './interfaces/jogador.interface';
-import { ValidacaoParametrosPipe } from '../../common/pipes/jogadores.validate';
+import { ValidacaoParametrosPipe } from '../../common/pipes/jogadores.validate.pipe';
 
 @Controller('/api/v1/jogadores')
 export class JogadoresController {
